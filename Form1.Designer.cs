@@ -47,7 +47,6 @@ namespace Graphing_Tool
             this.menuStrip1.Stretch = false;
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // mainPanel
             // 
@@ -55,7 +54,6 @@ namespace Graphing_Tool
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(774, 848);
             this.mainPanel.TabIndex = 1;
-            this.mainPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainPanel_Clicked);
             // 
             // Form1
             // 
@@ -68,7 +66,6 @@ namespace Graphing_Tool
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }
