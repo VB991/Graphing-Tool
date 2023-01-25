@@ -50,9 +50,9 @@ namespace Graphing_Tool
             // 
             // mainPanel
             // 
-            this.mainPanel.Location = new System.Drawing.Point(103, 0);
+            this.mainPanel.Location = new System.Drawing.Point(96, 0);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(774, 848);
+            this.mainPanel.Size = new System.Drawing.Size(781, 848);
             this.mainPanel.TabIndex = 1;
             this.mainPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainPanel_Clicked);
             // 
