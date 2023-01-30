@@ -29,11 +29,5 @@ namespace Graphing_Tool
                 //.Location.X and Y is cursor position relative to mainPanel
             }
         }
-            //.Location.X and Y is cursor position relative to mainPanel
-            drawNode(e.Location.X, e.Location.Y);
-        }
-            //.Location.X and Y is cursor position relative to mainPanel
-            drawNode(e.Location.X, e.Location.Y);
-        }
     }
 }
