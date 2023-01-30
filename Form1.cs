@@ -1,3 +1,5 @@
+using System.Drawing.Text;
+
 namespace Graphing_Tool
 {
     public partial class Form1 : Form

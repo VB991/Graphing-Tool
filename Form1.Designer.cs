@@ -54,6 +54,7 @@ namespace Graphing_Tool
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(774, 848);
             this.mainPanel.TabIndex = 1;
+            this.mainPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainPanel_Clicked);
             // 
             // Form1
             // 
@@ -68,6 +69,11 @@ namespace Graphing_Tool
             this.Text = "Form1";
             this.ResumeLayout(false);
 
+        }
+
+        private void MainPanel_MouseClick(object sender, MouseEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

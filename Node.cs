@@ -16,6 +16,7 @@ namespace Graphing_Tool
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+
             Point newLocation = this.Location;
             newLocation.Offset(-(this.Size.Width/2), -(this.Size.Height/2));
             this.Location = newLocation;
