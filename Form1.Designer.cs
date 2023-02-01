@@ -61,7 +61,7 @@ namespace Graphing_Tool
             // 
             // node
             // 
-            this.node.Location = new System.Drawing.Point(50, 50);
+            this.node.Location = new System.Drawing.Point(306, 202);
             this.node.Name = "node";
             this.node.Size = new System.Drawing.Size(50, 50);
             this.node.TabIndex = 0;
@@ -81,12 +81,6 @@ namespace Graphing_Tool
             this.ResumeLayout(false);
 
         }
-
-        private void MainPanel_MouseClick(object sender, MouseEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         private MenuStrip menuStrip1;

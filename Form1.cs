@@ -17,10 +17,12 @@ namespace Graphing_Tool
             if (e.Button == MouseButtons.Left)
             {
                 Node node = new Node();
-                node.Location = e.Location;
+                Point newLocation = e.Location;
+                //offsets position from: cursor at top left -> cursor at centre
+                newLocation.Offset(-(nodeDiameter / 2), -(nodeDiameter / 2));
+                node.Location = newLocation;
                 node.Size = new Size(nodeDiameter, nodeDiameter);   
                 this.mainPanel.Controls.Add(node);
-                //.Location.X and Y is cursor position relative to mainPanel
             }
         }
     }

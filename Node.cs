@@ -9,14 +9,18 @@ namespace Graphing_Tool
 {
     public class Node : Control
     {
+        //used for dragging functionality
         private bool isMoving;
-        private Point previousLocation;
+        private Point previousLocation; 
 
+        //maintaining pen object improves rendering efficiency
+        private Pen pen;
         public Node() {
             this.isMoving = false;
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.onClicked);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.onReleased);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.onCursorMoves);
+            this.pen = new Pen(Color.Black, 1);
         }
 
         private void onClicked(object sender, MouseEventArgs e)
@@ -39,37 +43,25 @@ namespace Graphing_Tool
             this.isMoving = false;
         }
 
+        /// <summary>
+        /// graphics rendering and region setting
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
+            //calls parent paint method
             base.OnPaint(e);
 
-
-            Point newLocation = this.Location;
-            newLocation.Offset(-(this.Size.Width/2), -(this.Size.Height/2));
-            this.Location = newLocation;
-
-            e.Graphics.FillEllipse(new SolidBrush(Color.Black), this.Location.X, this.Location.Y, this.Width, this.Height);
-
-            /*
-            System.Drawing.Drawing2D.GraphicsPath circleRegion =
-            new System.Drawing.Drawing2D.GraphicsPath();
-
-            // Set a new rectangle to the same size as the node's 
-            // ClientRectangle property.
-            System.Drawing.Rectangle newRectangle = this.ClientRectangle;
-
-            newRectangle.Inflate(-1, -1);
-            // Draw the circle
-            e.Graphics.FillEllipse(new System.Drawing.SolidBrush(Color.Black), newRectangle);
-            // Create a circle within the new rectangle.
-            newRectangle.Inflate(1, 1);
-            circleRegion.AddEllipse(newRectangle);
-
-            // Set the node's Region property to the newly created 
-            // circle region.
+            //set the node's region in it's container as a circle
+            System.Drawing.Drawing2D.GraphicsPath circleRegion = new System.Drawing.Drawing2D.GraphicsPath();
+            circleRegion.AddEllipse(this.ClientRectangle);
             this.Region = new System.Drawing.Region(circleRegion);
-            */
 
+            //enables antialiasing and renders the circle
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            Rectangle rectangle = this.ClientRectangle;
+            rectangle.Inflate(-1, -1); //prevents circle being drawn out of region
+            e.Graphics.DrawEllipse(this.pen, rectangle);
         }
     }
 }
