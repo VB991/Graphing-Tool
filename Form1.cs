@@ -1,4 +1,4 @@
-using System.Windows.Forms.VisualStyles;
+using System.Drawing.Text;
 
 namespace Graphing_Tool
 {
@@ -9,30 +9,53 @@ namespace Graphing_Tool
             InitializeComponent();
         }
 
-        private int nodeDiameter = 40; //diameter of node in pixels
-
-        /// <summary>
-        /// Draws a new node for the graph, at the position in pixels from the top left of the container
-        /// </summary>
-        /// <param name="name">name of the node</param>
-        /// <param name="xPos">x coordinate of mouse click</param>
-        /// <param name="yPos">y coordinate of mouse click</param>
-        private void drawNode(int xPos, int yPos)
+        private int nodeDiameter = 50; //diameter of node in pixels
         {
-            //offests node centre to cursor position
-            xPos -= nodeDiameter / 2;
-            yPos -= nodeDiameter / 2;
+        private void mainPanel_Clicked(object sender, MouseEventArgs e)
+        //e is object containing click event information
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Node node = new Node();
+                Point newLocation = e.Location;
+                //offsets position from: cursor at top left -> cursor at centre
+                newLocation.Offset(-(nodeDiameter / 2), -(nodeDiameter / 2));
+                node.Location = newLocation;
+                node.Size = new Size(nodeDiameter, nodeDiameter);   
+                this.mainPanel.Controls.Add(node);
+            }
+            xPos -= 25;
+            yPos -= 25;
+            this.Text = (xPos.ToString() + " " + yPos.ToString());
+            PictureBox node = new PictureBox();
+            node.Name = name;
+            node.Size = new Size(50, 50);
+            node.BackColor = SystemColors.Highlight;
+        {
+            xPos -= 25;
+            yPos -= 25;
+            this.Text = (xPos.ToString() + " " + yPos.ToString());
+            PictureBox node = new PictureBox();
+            node.Name = name;
+            node.Size = new Size(50, 50);
+            node.BackColor = SystemColors.Highlight;
 
-            Pen pen = new Pen(Color.Black); //temporary pen object
-            //calls create graphics method of mainPanel to draw circle
-            this.mainPanel.CreateGraphics().DrawEllipse(pen, xPos,yPos, nodeDiameter,nodeDiameter);
+            node.Location = new Point(xPos, yPos);
+            this.mainPanel.Controls.Add(node);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
 
         private void mainPanel_Clicked(object sender, MouseEventArgs e)
         {
-            //e is object containing click event information
-            //.Location.X and Y is cursor position relative to mainPanel
-            drawNode(e.Location.X, e.Location.Y);
+            newNode("node", e.Location.X, e.Location.Y);
         }
     }
 }

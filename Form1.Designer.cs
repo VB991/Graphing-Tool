@@ -33,6 +33,8 @@ namespace Graphing_Tool
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mainPanel = new System.Windows.Forms.Panel();
+            this.node = new Graphing_Tool.Node();
+            this.mainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -50,11 +52,19 @@ namespace Graphing_Tool
             // 
             // mainPanel
             // 
-            this.mainPanel.Location = new System.Drawing.Point(96, 0);
+            this.mainPanel.Controls.Add(this.node);
+            this.mainPanel.Location = new System.Drawing.Point(103, 0);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(781, 848);
             this.mainPanel.TabIndex = 1;
             this.mainPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainPanel_Clicked);
+            // 
+            // node
+            // 
+            this.node.Location = new System.Drawing.Point(306, 202);
+            this.node.Name = "node";
+            this.node.Size = new System.Drawing.Size(50, 50);
+            this.node.TabIndex = 0;
             // 
             // Form1
             // 
@@ -67,13 +77,14 @@ namespace Graphing_Tool
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.mainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
-
         #endregion
 
         private MenuStrip menuStrip1;
         private Panel mainPanel;
+        private Node node;
     }
 }
