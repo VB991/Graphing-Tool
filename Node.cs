@@ -23,12 +23,21 @@ namespace Graphing_Tool
             this.pen = new Pen(Color.Black, 1);
         }
 
+        /// <summary>
+        /// stores location when clicked and enables moving state
+        /// </summary>
         private void onClicked(object sender, MouseEventArgs e)
         {
-            previousLocation = e.Location;
-            this.isMoving = true;
+            if (e.Button == MouseButtons.Left)
+            {
+                previousLocation = e.Location;
+                this.isMoving = true;
+            }
         }
 
+        /// <summary>
+        /// offset location to cursor position if in moving state
+        /// </summary>
         private void onCursorMoves(object sender, MouseEventArgs e) { 
             if (this.isMoving)
             {
@@ -38,9 +47,15 @@ namespace Graphing_Tool
             }
         }
 
+        /// <summary>
+        /// disables moving state when click released
+        /// </summary>
         private void onReleased(object sender, MouseEventArgs e)
         {
-            this.isMoving = false;
+            if (e.Button == MouseButtons.Left)
+            {
+                this.isMoving = false;
+            }
         }
 
         /// <summary>
