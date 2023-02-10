@@ -10,7 +10,8 @@ namespace Graphing_Tool
         }
 
         private int nodeDiameter = 50; //diameter of node in pixels
-
+        private bool drawEdge = false;
+        private Point tempStartPoint;
         private void mainPanel_Clicked(object sender, MouseEventArgs e)
         //e is object containing click event information
         {
@@ -23,6 +24,20 @@ namespace Graphing_Tool
                 node.Location = newLocation;
                 node.Size = new Size(nodeDiameter, nodeDiameter);   
                 this.mainPanel.Controls.Add(node);
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                if (!drawEdge)
+                {
+                    drawEdge= true;
+                    tempStartPoint = e.Location;
+
+                } else if (drawEdge)
+                {
+                    drawEdge= false;
+                    Edge edge = new Edge(this.tempStartPoint,e.Location);
+                    this.mainPanel.Controls.Add(edge);
+                }
             }
         }
     }

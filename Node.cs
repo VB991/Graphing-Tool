@@ -9,11 +9,11 @@ namespace Graphing_Tool
 {
     public class Node : Control
     {
-        //used for dragging functionality
+        // Used for dragging functionality.
         private bool isMoving;
         private Point previousLocation; 
 
-        //maintaining pen object improves rendering efficiency
+        // Maintaining the pen object improves rendering efficiency.
         private Pen pen;
         public Node() {
             this.isMoving = false;
@@ -24,7 +24,7 @@ namespace Graphing_Tool
         }
 
         /// <summary>
-        /// stores location when clicked and enables moving state
+        /// Stores location when left-clicked and enables moving state.
         /// </summary>
         private void onClicked(object sender, MouseEventArgs e)
         {
@@ -36,7 +36,7 @@ namespace Graphing_Tool
         }
 
         /// <summary>
-        /// offset location to cursor position if in moving state
+        /// Offset location to cursor position if in moving state.
         /// </summary>
         private void onCursorMoves(object sender, MouseEventArgs e) { 
             if (this.isMoving)
@@ -48,7 +48,7 @@ namespace Graphing_Tool
         }
 
         /// <summary>
-        /// disables moving state when click released
+        /// Disables moving state when left-click released.
         /// </summary>
         private void onReleased(object sender, MouseEventArgs e)
         {
@@ -59,23 +59,22 @@ namespace Graphing_Tool
         }
 
         /// <summary>
-        /// graphics rendering and region setting
+        /// Renders circle.
         /// </summary>
-        /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            //calls parent paint method
+            // Calls the parent paint method.
             base.OnPaint(e);
 
-            //set the node's region in it's container as a circle
+            // Set the node's region (wihin it's container) as a circle.
             System.Drawing.Drawing2D.GraphicsPath circleRegion = new System.Drawing.Drawing2D.GraphicsPath();
             circleRegion.AddEllipse(this.ClientRectangle);
             this.Region = new System.Drawing.Region(circleRegion);
 
-            //enables antialiasing and renders the circle
+            // Enables antialiasing and renders the circle.
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             Rectangle rectangle = this.ClientRectangle;
-            rectangle.Inflate(-1, -1); //prevents circle being drawn out of region
+            rectangle.Inflate(-1, -1); // Shrinks circle by a pixel to prevent it being drawn out of region.
             e.Graphics.DrawEllipse(this.pen, rectangle);
         }
     }
