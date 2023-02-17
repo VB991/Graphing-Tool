@@ -1,4 +1,5 @@
 using System.Drawing.Text;
+using System.Security.Cryptography.Xml;
 
 namespace Graphing_Tool
 {
@@ -7,6 +8,20 @@ namespace Graphing_Tool
         public Form1()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        ///  Returns the offset of a point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="dx"></param>
+        /// <param name="dy"></param>
+        /// <returns></returns>
+        private Point ReturnOffset(Point point, int dx, int dy)
+        {
+            Point newPoint = point;
+            newPoint.Offset(dx, dy);
+            return newPoint;
         }
 
         private int nodeDiameter = 50; //diameter of node in pixels
@@ -18,24 +33,28 @@ namespace Graphing_Tool
             if (e.Button == MouseButtons.Left)
             {
                 Node node = new Node();
-                Point newLocation = e.Location;
+
                 //offsets position from: cursor at top left -> cursor at centre
-                newLocation.Offset(-(nodeDiameter / 2), -(nodeDiameter / 2));
-                node.Location = newLocation;
-                node.Size = new Size(nodeDiameter, nodeDiameter);   
+                node.Location = ReturnOffset(e.Location, - (nodeDiameter / 2), -(nodeDiameter / 2));
+                node.Size = new Size(nodeDiameter, nodeDiameter);
+                node.MouseUp += new System.Windows.Forms.MouseEventHandler(this.node_Clicked);
                 this.mainPanel.Controls.Add(node);
             }
-            else if (e.Button == MouseButtons.Right)
+        }
+        private void node_Clicked(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
             {
+                Node tempNode = sender as Node;
                 if (!drawEdge)
                 {
-                    drawEdge= true;
-                    tempStartPoint = e.Location;
-
-                } else if (drawEdge)
+                    drawEdge = true;
+                    this.tempStartPoint = ReturnOffset(tempNode.Location, (nodeDiameter / 2), (nodeDiameter / 2));
+                } 
+                else if (drawEdge)
                 {
-                    drawEdge= false;
-                    Edge edge = new Edge(this.tempStartPoint,e.Location);
+                    drawEdge = false;
+                    Edge edge = new Edge(this.tempStartPoint, ReturnOffset(tempNode.Location, (nodeDiameter / 2), (nodeDiameter / 2)));
                     this.mainPanel.Controls.Add(edge);
                 }
             }

@@ -23,7 +23,7 @@ namespace Graphing_Tool
         public Point StartPoint
         {
             get { return startPoint; }
-            set { 
+            set {
                 startPoint = value;
                 updateSizeAndPosition();
                 this.Refresh();
@@ -43,6 +43,7 @@ namespace Graphing_Tool
 
         private Point midPoint; // Midpoint of start and end point
         private int euclidianDistance; // Direct distance between the points
+        private Matrix rotation; // Rotation matrix used for graphics rendering
 
         /// <summary>
         /// Initiates new edge control
@@ -72,13 +73,27 @@ namespace Graphing_Tool
             this.euclidianDistance = (int)Math.Round(Math.Sqrt(
             Math.Pow(endPoint.X - startPoint.X, 2) + Math.Pow(endPoint.Y - startPoint.Y, 2)
             ), 0);
+
             // Set object size as largest necessary square; width & height are direct distance between start and end points.
             // ("Necessary" means that the line and hitbox can be rotated within clientRectangle and not be out of bounds).
             this.Size = new Size(this.euclidianDistance, this.euclidianDistance);
+
             // Sets midpoint between the start and end points by using the mean ordinates.
             this.midPoint = new Point((startPoint.X + endPoint.X) / 2, (startPoint.Y + endPoint.Y) / 2);
+
             // Calculate the upper left of the clientRectangle (determined by location attribute).
             this.Location = new Point(this.midPoint.X - (this.Size.Width / 2), this.midPoint.Y - (this.Size.Height / 2));
+
+            /* Anti-clockwise angle between the line which connects start and endpoint, and horizontal (converted to degrees).
+             * Atan2 handles appropriate angle for quadrants. Negation due to System.Graphics coordinate system working 
+             * with positive-positive quadrant at bottom right (I am converting to flip the y axis)
+            */
+            double angle = Math.Atan2(-(endPoint.Y - startPoint.Y), endPoint.X - startPoint.X)
+                * 180 / Math.PI;
+            // Creates rotation matrix of necessary angle. Centered at midpoint (recalculated to be relative to clientRectangle)
+            this.rotation = new Matrix();
+            this.rotation.RotateAt((float)-angle, // Negative angle due to this method using Clockwise rotation
+                new Point(this.midPoint.X - this.Location.X, this.midPoint.Y - this.Location.Y));
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -88,32 +103,19 @@ namespace Graphing_Tool
             // Enables antialiasing.
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-            /* Anti-clockwise angle between the line which connects start and endpoint, and horizontal (converted to degrees).
-             * Atan2 handles appropriate angle for quadrants. Negation due to System.Graphics coordinate system working 
-             * with positive-positive quadrant at bottom right (I am converting to flip the y axis)
-            */
-            double angle = Math.Atan2(-(endPoint.Y-startPoint.Y), endPoint.X-startPoint.X)
-                *180/Math.PI;
-            // Creates rotation matrix of necessary angle. Centered at midpoint (recalculated to be relative to clientRectangle)
-            Matrix rotation = new Matrix();
-            rotation.RotateAt((float)-angle, // Negative angle due to this method using Clockwise rotation
-                new Point(this.midPoint.X-this.Location.X,this.midPoint.Y-this.Location.Y));
 
             // Creates rotated rectangle for the control's region (which is used as its hitbox)
-            Rectangle tempRectangle = new Rectangle(0, (this.euclidianDistance-hitBoxWidth)/2, this.euclidianDistance, hitBoxWidth);
+            Rectangle tempRectangle = new Rectangle(0, (this.euclidianDistance - hitBoxWidth) / 2, this.euclidianDistance, hitBoxWidth);
             GraphicsPath g = new GraphicsPath();
             g.AddRectangle(tempRectangle);
-            g.Transform(rotation);
+            g.Transform(this.rotation);
             // Sets this as the region
             this.Region = new System.Drawing.Region(g);
 
-            //temporary for visualising hitbox/control's region
-                g.Reset();
-                tempRectangle.Width -= 1;
-                tempRectangle.Height -= 1;
-                g.AddRectangle(tempRectangle);
-                g.Transform(rotation);
-                e.Graphics.DrawPath(this.pen, g);
+            g.Reset();
+            g.AddLine(0, this.midPoint.Y - this.Location.Y, this.Width, this.midPoint.Y - this.Location.Y);
+            g.Transform(this.rotation);
+            e.Graphics.DrawPath(this.pen, g);
         }
     }
 }

@@ -11,11 +11,12 @@ namespace Graphing_Tool
     {
         // Used for dragging functionality.
         private bool isMoving;
-        private Point previousLocation; 
+        private Point previousLocation;
 
         // Maintaining the pen object improves rendering efficiency.
         private Pen pen;
         public Node() {
+            this.DoubleBuffered= true;
             this.isMoving = false;
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.onClicked);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.onReleased);
@@ -41,9 +42,12 @@ namespace Graphing_Tool
         private void onCursorMoves(object sender, MouseEventArgs e) { 
             if (this.isMoving)
             {
+                this.Invalidate();
                 Point location = this.Location;
                 location.Offset(e.Location.X - previousLocation.X, e.Location.Y - previousLocation.Y);
                 this.Location = location;
+                this.Parent.Update();
+
             }
         }
 
